@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Orders.Shared.Entities;
 
-public class Category
+public class Category : IEntityWithName
 {
     public int Id { get; set; }
 
