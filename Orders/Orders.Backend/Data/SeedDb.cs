@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Data;
@@ -15,11 +16,23 @@ public class SeedDb
     public async Task SeedAsync()
     {
         await _context.Database.EnsureCreatedAsync();
-        await CheckCountriesAsync();
-        await CheckCategoriesAsync();
+        await CheckCountriesFullAsync();
+       // await CheckCountriesAsync();
+        //await CheckCategoriesAsync();
 
     }
 
+
+    private async Task CheckCountriesFullAsync()
+    {
+        if (!_context.Countries.Any())
+        {
+            var countriesSQLScript = File.ReadAllText("Data\\CountriesStatesCities.sql");
+            await _context.Database.ExecuteSqlRawAsync(countriesSQLScript);
+        }
+    }
+
+    /*
     private async Task CheckCategoriesAsync()
     {
         if (!_context.Categories.Any())
@@ -30,9 +43,9 @@ public class SeedDb
 
         }
 
-    }
+    }*/
 
-    private async Task CheckCountriesAsync()
+  /*  private async Task CheckCountriesAsync()
     {
         if (!_context.Countries.Any())
         {
@@ -40,5 +53,5 @@ public class SeedDb
             _context.Countries.Add(new Country { Name = "Estados Unidos" });
             await _context.SaveChangesAsync();
         }
-    }
+    }*/
 }
